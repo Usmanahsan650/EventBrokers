@@ -1,17 +1,18 @@
 using System.Globalization;
 using rabbit.DataContracts;
+using Serilog;
 
 namespace rabbit;
 
 public static class EventBrokerFactory
 {
-    public static IEventBroker GetEventBroker(EventBrokerConfig config, string topic)
+    public static IEventBroker GetEventBroker(EventBrokerConfig config, string topic,ILogger logger)
     {
         switch (config.BrokerType)
         {
             case EventBroker.RabbitMq:
             {
-                return new RabbitMq((RabbitMqConfiguration)config,topic);
+                return new RabbitMq(logger,(RabbitMqConfiguration)config,topic);
             }
         }
 

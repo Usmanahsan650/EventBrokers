@@ -49,3 +49,7 @@
 /home/usman/RiderProjects/rabbit/obj/Debug/net8.0/rabbit.genruntimeconfig.cache
 /home/usman/RiderProjects/rabbit/obj/Debug/net8.0/ref/rabbit.dll
 /home/usman/RiderProjects/rabbit/bin/Debug/net8.0/RabbitMQ.Client.dll
+/home/usman/RiderProjects/rabbit/bin/Debug/net8.0/Serilog.dll
+/home/usman/RiderProjects/rabbit/bin/Debug/net8.0/Serilog.Sinks.File.dll
+/home/usman/RiderProjects/rabbit/obj/Debug/net8.0/rabbit.sourcelink.json
+/home/usman/RiderProjects/rabbit/bin/Debug/net8.0/Serilog.Sinks.Console.dll

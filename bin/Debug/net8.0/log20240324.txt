@@ -1,0 +1,26 @@
+2024-03-24 18:17:43.562 [VRB] Sender started
+2024-03-24 18:22:06.521 [VRB] Sender started { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:23:07.404 [ERR] A task was canceled. { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:23:07.494 [ERR] A task was canceled. { SourceContext: "rabbit.Reciever" }
+2024-03-24 18:23:47.234 [VRB] Sender started { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:26:00.630 [ERR] A task was canceled. { SourceContext: "rabbit.Reciever" }
+2024-03-24 18:26:00.633 [ERR] A task was canceled. { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:26:05.984 [VRB] Sender started { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:26:14.410 [ERR] A task was canceled. { SourceContext: "rabbit.Reciever" }
+2024-03-24 18:26:14.413 [ERR] A task was canceled. { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:26:19.272 [VRB] Sender started { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:26:25.789 [ERR] A task was canceled. { SourceContext: "rabbit.Reciever" }
+2024-03-24 18:26:25.791 [ERR] A task was canceled. { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:33:03.236 [VRB] Sender started { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:36:30.007 [ERR] The AMQP operation was interrupted: AMQP close-reason, initiated by Peer, code=404, text='NOT_FOUND - no queue 'topic' in vhost '/'', classId=50, methodId=20 { SourceContext: "rabbit.RabbitMq" }
+2024-03-24 18:36:30.150 [ERR] The AMQP operation was interrupted: AMQP close-reason, initiated by Peer, code=404, text='NOT_FOUND - no queue 'topic' in vhost '/'', classId=50, methodId=20 { SourceContext: "rabbit.RabbitMq" }
+2024-03-24 18:36:30.152 [VRB] Sender started { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:37:04.736 [VRB] Sender started { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:40:24.635 [ERR] A task was canceled. { SourceContext: "rabbit.Reciever" }
+2024-03-24 18:40:24.639 [ERR] A task was canceled. { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:41:37.786 [VRB] Sender started { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:42:23.775 [ERR] A task was canceled. { SourceContext: "rabbit.Reciever" }
+2024-03-24 18:42:23.778 [ERR] A task was canceled. { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:42:30.693 [VRB] Sender started { SourceContext: "rabbit.SenderHost" }
+2024-03-24 18:43:00.691 [ERR] A task was canceled. { SourceContext: "rabbit.Reciever" }
+2024-03-24 18:43:00.695 [ERR] A task was canceled. { SourceContext: "rabbit.SenderHost" }

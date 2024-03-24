@@ -5,7 +5,12 @@ using RabbitMQ.Client;
 public interface IEventBroker
 {
     public delegate void OnEventRecieveDelegate(string message);
-    public  event OnEventRecieveDelegate onEventReceived;
-    public Task  Subscribe(OnEventRecieveDelegate onEventRecieveDelegate);
+    public delegate void OnEventProcessingErrorDelegate(string message,Exception exception);
+
+    public event IEventBroker.OnEventRecieveDelegate? OnEventRecieved;
+    public event IEventBroker.OnEventProcessingErrorDelegate? OnEventProcessingError;
+    public Task Subscribe(IEventBroker.OnEventRecieveDelegate onEventRecieveDelegate,
+        IEventBroker.OnEventProcessingErrorDelegate? eventProcessingError);
+
     public Task Publish(string eventBody);
 }

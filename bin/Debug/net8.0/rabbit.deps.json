@@ -9,7 +9,10 @@
       "rabbit/1.0.0": {
         "dependencies": {
           "Microsoft.Extensions.Hosting": "9.0.0-preview.2.24128.5",
-          "RabbitMQ.Client": "6.0.0"
+          "RabbitMQ.Client": "6.0.0",
+          "Serilog": "4.0.0-dev-02122",
+          "Serilog.Sinks.Console": "5.1.0-dev-00943",
+          "Serilog.Sinks.File": "5.0.1-dev-00972"
         },
         "runtime": {
           "rabbit.dll": {}
@@ -389,6 +392,36 @@
           }
         }
       },
+      "Serilog/4.0.0-dev-02122": {
+        "runtime": {
+          "lib/net8.0/Serilog.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.0.0.0"
+          }
+        }
+      },
+      "Serilog.Sinks.Console/5.1.0-dev-00943": {
+        "dependencies": {
+          "Serilog": "4.0.0-dev-02122"
+        },
+        "runtime": {
+          "lib/net7.0/Serilog.Sinks.Console.dll": {
+            "assemblyVersion": "5.1.0.0",
+            "fileVersion": "5.1.0.0"
+          }
+        }
+      },
+      "Serilog.Sinks.File/5.0.1-dev-00972": {
+        "dependencies": {
+          "Serilog": "4.0.0-dev-02122"
+        },
+        "runtime": {
+          "lib/net6.0/Serilog.Sinks.File.dll": {
+            "assemblyVersion": "5.0.1.0",
+            "fileVersion": "5.0.1.0"
+          }
+        }
+      },
       "System.Diagnostics.DiagnosticSource/9.0.0-preview.2.24128.5": {
         "runtime": {
           "lib/net8.0/System.Diagnostics.DiagnosticSource.dll": {
@@ -650,6 +683,27 @@
       "sha512": "sha512-8e7KK44Fai72F452GF8KxUAW5t+ik3rUcalpQaxQNv6DxZyQTgVioWfyYSGYF6qpUqDdy7ZmvD3Zgkm7pKNR9w==",
       "path": "rabbitmq.client/6.0.0",
       "hashPath": "rabbitmq.client.6.0.0.nupkg.sha512"
+    },
+    "Serilog/4.0.0-dev-02122": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-u4aRwoIMSn9MREOkNJyL8BNhXVf/vPPP2Dp3YyyNVZg7Z31ITCHyKnmMoUH5jMgqYxR6JunPTV/Mx9hQDBMCLA==",
+      "path": "serilog/4.0.0-dev-02122",
+      "hashPath": "serilog.4.0.0-dev-02122.nupkg.sha512"
+    },
+    "Serilog.Sinks.Console/5.1.0-dev-00943": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LxeXXKPSPviMSF0RK9jFTpsQBCsSW83lDAK+I6Z/Q9ukqi5rYtlLPO+cjZNZ70r4mSRpjih07mT79VUbnYi/1A==",
+      "path": "serilog.sinks.console/5.1.0-dev-00943",
+      "hashPath": "serilog.sinks.console.5.1.0-dev-00943.nupkg.sha512"
+    },
+    "Serilog.Sinks.File/5.0.1-dev-00972": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-fIK2UIewc1meCDpL8pOJLy0QRe1IzqJ3cnSXjz7GpPVVCr715nFloa49QKeK4dFPDgQk9xU3zi3ioIVefSi0+Q==",
+      "path": "serilog.sinks.file/5.0.1-dev-00972",
+      "hashPath": "serilog.sinks.file.5.0.1-dev-00972.nupkg.sha512"
     },
     "System.Diagnostics.DiagnosticSource/9.0.0-preview.2.24128.5": {
       "type": "package",
