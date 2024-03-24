@@ -1,7 +1,5 @@
-using RabbitMQ.Client.Events;
+namespace rabbit.EventBrokers;
 
-namespace rabbit;
-using RabbitMQ.Client;
 public interface IEventBroker
 {
     public delegate void OnEventRecieveDelegate(string message);

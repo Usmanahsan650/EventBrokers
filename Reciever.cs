@@ -1,4 +1,7 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using rabbit.DataContracts;
+using rabbit.EventBrokers;
 using Serilog;
 
 namespace rabbit;
@@ -7,10 +10,14 @@ public class Reciever:BackgroundService
 {
     private ILogger _logger;
     private IEventBroker _eventBroker;
-    public Reciever(ILogger logger)
+    public Reciever(ILogger logger,IConfiguration configuration)
     {
+        var brokerConfig=configuration.GetSection("EventBroker").Get<RabbitMqConfiguration>();
+        var topic=configuration.GetSection("EventTopic").Value;
+        if (brokerConfig == null)
+            throw new Exception("Broker Configuration missing");
         _logger = logger.ForContext<Reciever>();
-        _eventBroker=EventBrokerFactory.GetEventBroker(config.RabbitMqConfiguration,config.EventTopic,_logger);
+        _eventBroker=EventBrokerFactory.GetEventBroker(brokerConfig,topic,_logger);
 
     }
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

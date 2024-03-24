@@ -1,8 +1,7 @@
-using System.Globalization;
 using rabbit.DataContracts;
 using Serilog;
 
-namespace rabbit;
+namespace rabbit.EventBrokers;
 
 public static class EventBrokerFactory
 {

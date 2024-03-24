@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog.Settings.Configuration;
 using Serilog;
 using Serilog.Events;
 namespace rabbit;
@@ -8,8 +10,11 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        
-        var host = Initialize().ConfigureSeriLog().CreateDefaultApp(args).Build();
+        IConfiguration configuration = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("./appsettings.json", optional: true, reloadOnChange: true)
+            .Build();
+        var host = Initialize().ConfigureSeriLog(configuration).CreateDefaultApp(configuration).Build();
         
         Serilog.Debugging.SelfLog.Enable(msg => Console.WriteLine(msg));
         Console.WriteLine("starting");
@@ -21,26 +26,24 @@ public class Program
     {
         return new Program();
     }
-    private  Program ConfigureSeriLog()
+    private  Program ConfigureSeriLog(IConfiguration configuration)
     {
         Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Verbose()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Verbose) // Set minimum level for Microsoft.* namespace
-            .Enrich.FromLogContext()
-            .WriteTo.Console()
-            .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day, 
-                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u3}] {Message:lj} {Properties}{NewLine}{Exception}")            .CreateLogger();
+            .ReadFrom.Configuration(configuration)
+            .CreateLogger();
         return this;
     }
-    private  IHostBuilder CreateDefaultApp(string[] args)
+    private  IHostBuilder CreateDefaultApp(IConfiguration configuration)
     {
         var builder = Host.CreateDefaultBuilder();
       
         builder.ConfigureServices(conf =>
         {
             conf.AddSingleton(Log.Logger);
+            conf.AddSingleton(configuration);
             conf.AddHostedService<SenderHost>();
             conf.AddHostedService<Reciever>();
+            
         });
         builder.ConfigureLogging(conf =>
         {

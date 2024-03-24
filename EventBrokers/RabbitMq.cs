@@ -4,7 +4,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Serilog;
 
-namespace rabbit;
+namespace rabbit.EventBrokers;
 
 public class RabbitMq:IEventBroker
 {
