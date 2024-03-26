@@ -1,3 +1,4 @@
+using System.Security.Principal;
 using System.Text;
 using rabbit.DataContracts;
 using RabbitMQ.Client;
@@ -9,13 +10,11 @@ namespace rabbit.EventBrokers;
 public class RabbitMq:IEventBroker
 {
     private readonly ConnectionFactory _connectionFactory;
-    private readonly string _topic;
     private readonly IModel _channel;
     private ILogger _logger;
-    public RabbitMq(ILogger logger,RabbitMqConfiguration configuration,string topic)
+    public RabbitMq(ILogger logger,RabbitMqConfiguration configuration)
     {
         _logger = logger.ForContext<RabbitMq>();
-        _topic = topic;
         var factory = new ConnectionFactory();
         factory.UserName = configuration.User;
         factory.Password = configuration.Password;
@@ -23,14 +22,14 @@ public class RabbitMq:IEventBroker
         factory.HostName = configuration.HostName;
         factory.Port = configuration.PortNumber;
         _connectionFactory = factory;
-        _channel=Setup(topic:topic);
+        _channel=Setup();
     }
 
     public event IEventBroker.OnEventRecieveDelegate? OnEventRecieved;
     public event IEventBroker.OnEventProcessingErrorDelegate? OnEventProcessingError;
 
 
-    public Task Subscribe(IEventBroker.OnEventRecieveDelegate onEventRecieveDelegate,IEventBroker.OnEventProcessingErrorDelegate? eventProcessingError)
+    public Task Subscribe(string topic,IEventBroker.OnEventRecieveDelegate onEventRecieveDelegate,IEventBroker.OnEventProcessingErrorDelegate? eventProcessingError)
     {
         OnEventRecieved += onEventRecieveDelegate;
         var consumer = new EventingBasicConsumer(_channel);
@@ -39,38 +38,30 @@ public class RabbitMq:IEventBroker
             try
             {
                 var body = System.Text.Encoding.UTF8.GetString(ea.Body.ToArray());
-                OnEventRecieved?.Invoke(body);
+                OnEventRecieved?.Invoke(body,ea.Exchange);
                 _channel.BasicAck(ea.DeliveryTag, false);
             }
             catch (Exception e)
             {
-                //Todo: implement on error
                 _logger.Error(e.Message, new { Exception = e });
                 _channel.BasicNack(ea.DeliveryTag, false,true);
-    
-                OnEventProcessingError?.Invoke(e.Message, exception: e);
+                OnEventProcessingError?.Invoke(e.Message, exception: e,ea.Exchange);
             }
             
         };
-        _channel.BasicConsume(queue: _topic,
+        _channel.BasicConsume(queue: topic,
             autoAck: false,
             consumer: consumer);
         return Task.CompletedTask;
     }
 
-    private IModel Setup(string topic)
+    private IModel Setup()
     {
         try
         {
             var connection = _connectionFactory.CreateConnection();
             var channel = connection.CreateModel();
-            channel.ExchangeDeclare("my_fanout_exchange", ExchangeType.Fanout);
-            channel.QueueDeclare(queue: topic,
-                durable: false,
-                exclusive: false,
-                autoDelete: false,
-                arguments: null);
-            channel.QueueBind(topic, "my_fanout_exchange", "");
+            channel.ExchangeDeclare(Constant.FANOUT_EXCHANGE_NAME, ExchangeType.Fanout);
             return channel;
         }
         catch (Exception e)
@@ -81,12 +72,42 @@ public class RabbitMq:IEventBroker
         }
     }
 
-
-    public Task Publish(string eventBody)
+    public void ConfigureTopic(string topic)
     {
-        var body = Encoding.UTF8.GetBytes(eventBody);
-        IBasicProperties basicProperties = _channel.CreateBasicProperties();
-        _channel.BasicPublish(exchange: "my_fanout_exchange", routingKey: string.Empty, basicProperties, body);
+        try
+        {
+            _channel.QueueDeclare(queue: topic,
+                            durable: false,
+                            exclusive: false,
+                            autoDelete: false,
+                            arguments: null);
+            _channel.QueueBind(topic, Constant.FANOUT_EXCHANGE_NAME, "");
+        }
+        catch(Exception ex)
+        {
+            _logger.Error("Failed to add topic ex:",ex);
+            throw;
+        }
+
+
+    }
+    public Task Publish(string eventBody,string? topic)
+    {
+        try
+        {
+            var body = Encoding.UTF8.GetBytes(eventBody);
+            IBasicProperties basicProperties = _channel.CreateBasicProperties();
+            if (topic == null)
+                _channel.BasicPublish(exchange: Constant.FANOUT_EXCHANGE_NAME, routingKey: string.Empty, basicProperties, body);
+            else
+                _channel.BasicPublish(exchange: string.Empty, routingKey: topic, basicProperties, body);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error("Error while producing event ex:",ex);
+            throw;
+        }
+        
         return Task.CompletedTask;
     }
     

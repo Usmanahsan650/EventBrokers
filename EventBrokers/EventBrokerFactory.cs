@@ -5,16 +5,15 @@ namespace rabbit.EventBrokers;
 
 public static class EventBrokerFactory
 {
-    public static IEventBroker GetEventBroker(EventBrokerConfig config, string topic,ILogger logger)
+    public static IEventBroker GetEventBroker(EventBrokerConfig config,ILogger logger)
     {
         switch (config.BrokerType)
         {
             case EventBroker.RabbitMq:
             {
-                return new RabbitMq(logger,(RabbitMqConfiguration)config,topic);
+                return new RabbitMq(logger,(RabbitMqConfiguration)config);
             }
         }
-
-        return null;
+        throw new BrokerExceptionsException("Broker Not Implemented ");
     }
 }
